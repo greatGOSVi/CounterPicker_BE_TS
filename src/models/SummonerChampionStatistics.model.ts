@@ -9,12 +9,13 @@ import {
 import { Champion } from './Champion.model';
 import { Summoner } from './Summoner.model';
 
-export class ChampionStatistics extends Model<
-  InferAttributes<ChampionStatistics>,
-  InferCreationAttributes<ChampionStatistics>
+export class SummonerChampionStatistics extends Model<
+  InferAttributes<SummonerChampionStatistics>,
+  InferCreationAttributes<SummonerChampionStatistics>
 > {
   declare summoner_id: number;
   declare champion_id: number;
+  declare lane: string;
   declare times_played: CreationOptional<number>;
   declare with_champion_wins: CreationOptional<number>;
   declare with_champion_loses: CreationOptional<number>;
@@ -23,8 +24,10 @@ export class ChampionStatistics extends Model<
   declare against_champion_loses: CreationOptional<number>;
 }
 
-export const initChampionStatisticsModel = async (sequelize: Sequelize) => {
-  ChampionStatistics.init(
+export const initSummonerChampionStatisticsModel = async (
+  sequelize: Sequelize
+) => {
+  SummonerChampionStatistics.init(
     {
       summoner_id: {
         type: DataTypes.INTEGER,
@@ -32,6 +35,10 @@ export const initChampionStatisticsModel = async (sequelize: Sequelize) => {
       },
       champion_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      lane: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
       times_played: {
@@ -60,18 +67,20 @@ export const initChampionStatisticsModel = async (sequelize: Sequelize) => {
       },
     },
     {
-      indexes: [{ fields: ['summoner_id', 'champion_id'], unique: true }],
+      indexes: [
+        { fields: ['summoner_id', 'champion_id', 'lane'], unique: true },
+      ],
       sequelize,
       tableName: 'champion_statistics',
     }
   );
 
-  await Summoner.hasOne(ChampionStatistics, {
+  await Summoner.hasOne(SummonerChampionStatistics, {
     foreignKey: 'summoner_id', //  FOREIGN KEY (summoner_id)
     sourceKey: 'id', //                REFERENCES Summoner (id)
   });
 
-  await Champion.hasOne(ChampionStatistics, {
+  await Champion.hasOne(SummonerChampionStatistics, {
     foreignKey: 'champion_id', //  FOREIGN KEY (summoner_id)
     sourceKey: 'id', //                REFERENCES Summoner (id)
   });

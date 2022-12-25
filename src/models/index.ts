@@ -1,8 +1,9 @@
 import { Sequelize } from 'sequelize';
 import { initChampionModel } from './Champion.model';
-import { initGameStatisticsModel } from './GameStatistics.model';
+import { initSummonerGeneralStatisticsModel } from './SummonerGeneralStatistics.model';
 import { initMatchModel } from './Match.model';
 import { initSummonerModel } from './Summoner.model';
+import { initSummonerChampionStatisticsModel } from './SummonerChampionStatistics.model';
 
 export let sequelize: Sequelize;
 
@@ -10,7 +11,8 @@ const models = [
   initSummonerModel,
   initMatchModel,
   initChampionModel,
-  initGameStatisticsModel,
+  initSummonerGeneralStatisticsModel,
+  initSummonerChampionStatisticsModel,
 ];
 
 export const startSequelize = async (

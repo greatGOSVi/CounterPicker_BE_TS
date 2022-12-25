@@ -8,9 +8,9 @@ import {
 } from 'sequelize';
 import { Summoner } from './Summoner.model';
 
-export class GameStatistics extends Model<
-  InferAttributes<GameStatistics>,
-  InferCreationAttributes<GameStatistics>
+export class SummonerGeneralStatistics extends Model<
+  InferAttributes<SummonerGeneralStatistics>,
+  InferCreationAttributes<SummonerGeneralStatistics>
 > {
   declare summoner_id: number;
   declare total_games: CreationOptional<number>;
@@ -27,8 +27,10 @@ export class GameStatistics extends Model<
   declare top_games: CreationOptional<number>;
 }
 
-export const initGameStatisticsModel = async (sequelize: Sequelize) => {
-  GameStatistics.init(
+export const initSummonerGeneralStatisticsModel = async (
+  sequelize: Sequelize
+) => {
+  SummonerGeneralStatistics.init(
     {
       summoner_id: {
         type: DataTypes.INTEGER,
@@ -89,7 +91,7 @@ export const initGameStatisticsModel = async (sequelize: Sequelize) => {
     }
   );
 
-  await Summoner.hasOne(GameStatistics, {
+  await Summoner.hasOne(SummonerGeneralStatistics, {
     foreignKey: 'summoner_id', //  FOREIGN KEY (summoner_id)
     sourceKey: 'id', //                REFERENCES Summoner (id)
   });
